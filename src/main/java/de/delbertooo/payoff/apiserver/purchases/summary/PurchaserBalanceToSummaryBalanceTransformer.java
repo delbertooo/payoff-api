@@ -31,7 +31,7 @@ public class PurchaserBalanceToSummaryBalanceTransformer {
 
     private SummaryService.Summary.Balance toBalance(PurchaserBalance purchaserBalance) {
         return new SummaryService.Summary.Balance()
-                .setUser(userToNamesTransformer.toName(purchaserBalance.getPurchaser()))
+                .setUser(userToNamesTransformer.toName(purchaserBalance.getParticipant()))
                 .setBalance(new BigDecimal(purchaserBalance.getBalance()).setScale(2, RoundingMode.HALF_UP))
                 ;
     }

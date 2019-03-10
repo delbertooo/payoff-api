@@ -28,7 +28,10 @@ public class PurchasesService {
     private PurchaseToPurchaseCreateTransformer purchaseToPurchaseCreateTransformer;
 
     @Autowired
-    public PurchasesService(PurchaseRepository purchaseRepository, PurchaseToPurchaseViewTransformer purchaseToPurchaseViewTransformer, PurchasesCountToPurchaseYearTransformer purchasesCountToPurchaseYearTransformer, PurchaseToPurchaseCreateTransformer purchaseToPurchaseCreateTransformer) {
+    public PurchasesService(PurchaseRepository purchaseRepository,
+                            PurchaseToPurchaseViewTransformer purchaseToPurchaseViewTransformer,
+                            PurchasesCountToPurchaseYearTransformer purchasesCountToPurchaseYearTransformer,
+                            PurchaseToPurchaseCreateTransformer purchaseToPurchaseCreateTransformer) {
         this.purchaseRepository = purchaseRepository;
         this.purchaseToPurchaseViewTransformer = purchaseToPurchaseViewTransformer;
         this.purchasesCountToPurchaseYearTransformer = purchasesCountToPurchaseYearTransformer;
@@ -61,7 +64,11 @@ public class PurchasesService {
     private void updatePurchaserBalance(Purchase purchase) {
         double pricePerParticipant = purchase.getPricePerParticipant();
         purchase.getParticipants()
-                .forEach(participant -> purchase.getPurchaser().addToBalance(participant, pricePerParticipant));
+                .forEach(participant -> {
+                    val purchaser = purchase.getPurchaser();
+                    purchaser.addToBalance(participant, pricePerParticipant);
+                    participant.addToBalance(purchaser, -pricePerParticipant);
+                });
     }
 
     @Getter
