@@ -23,7 +23,7 @@ public class PurchaseToPurchaseViewTransformer {
 
     public List<PurchaseView> toPurchaseViews(Collection<Purchase> purchases) {
         return purchases.stream()
-                .sorted(Comparator.comparing(Purchase::getPurchasedAt))
+                .sorted(Comparator.comparing(Purchase::getPurchasedAt).reversed())
                 .map(this::toPurchaseView)
                 .collect(Collectors.toList());
     }
