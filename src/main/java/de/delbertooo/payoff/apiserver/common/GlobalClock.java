@@ -8,11 +8,11 @@ import java.time.ZoneId;
 public class GlobalClock {
 
     private static final Object lock = new Object();
-    private static volatile Clock current = Clock.systemDefaultZone();
+    private static volatile Clock frozen = null;
 
     public static Clock current() {
         synchronized (lock) {
-            return current;
+            return frozen != null ? frozen : Clock.systemDefaultZone();
         }
     }
 
@@ -23,13 +23,13 @@ public class GlobalClock {
 
     public static void freeze(Instant instant, ZoneId zoneId) {
         synchronized (lock) {
-            current = Clock.fixed(instant, zoneId);
+            frozen = Clock.fixed(instant, zoneId);
         }
     }
 
     public static void unfreeze() {
         synchronized (lock) {
-            current = Clock.systemDefaultZone();
+            frozen = null;
         }
     }
 }
