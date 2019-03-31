@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -41,5 +42,19 @@ public class User {
         val purchaserBalance = new PurchaserBalance(this, participant);
         getBalances().add(purchaserBalance);
         return purchaserBalance;
+    }
+
+    public Stream<PurchaserBalance> streamNonZeroBalances() {
+        return getBalances().stream()
+                .filter(x -> Math.abs(x.getBalance()) >= 0.005)
+                ;
+    }
+
+    public Stream<PurchaserBalance> streamPositiveBalances() {
+        return streamNonZeroBalances().filter(x -> x.getBalance() > 0);
+    }
+
+    public Stream<PurchaserBalance> streamNegativeBalances() {
+        return streamNonZeroBalances().filter(x -> x.getBalance() < 0);
     }
 }

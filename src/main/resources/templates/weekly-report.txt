@@ -1,0 +1,13 @@
+Hi [(${name})],
+
+this is your weekly report:
+
+[# th:if="${not #lists.isEmpty(negativeBalances)}"]You owe:[# th:each="balance : ${negativeBalances}"]
+    - [(${balance.name})]: [(${balance.formattedPrice})]
+[/][/]
+
+[# th:if="${not #lists.isEmpty(positiveBalances)}"]Owes you:[# th:each="balance : ${positiveBalances}"]
+    - [(${balance.name})]: [(${balance.formattedPrice})]
+[/][/]
+
+-- [(${appUrl})]

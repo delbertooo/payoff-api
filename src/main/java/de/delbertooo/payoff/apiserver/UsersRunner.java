@@ -20,10 +20,11 @@ public class UsersRunner implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-        val delbertooo = new User().setName("delbertooo");
+        val delbertooo = new User().setName("delbertooo").setEmail("del@ber.de");
+        val foo = new User().setName("foo").setEmail("del@asdf.de");
         val masuuk = new User().setName("masuuk");
 
-        Stream.of(delbertooo, masuuk)
+        Stream.of(delbertooo, masuuk, foo)
                 .peek(u -> u.setPassword(UUID.randomUUID().toString()))
                 .forEach(userRepository::save);
     }
