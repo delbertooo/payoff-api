@@ -1,4 +1,4 @@
-package de.delbertooo.payoff.apiserver.purchases.summary;
+package de.delbertooo.payoff.apiserver.purchases.summaryapi;
 
 import de.delbertooo.payoff.apiserver.purchases.PurchaseRepository;
 import de.delbertooo.payoff.apiserver.purchases.PurchaserBalance;
