@@ -9,6 +9,7 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -54,11 +55,19 @@ public class PurchasesService {
     public void createPurchase(PurchaseCreate create) {
         val purchase = new Purchase();
         purchaseToPurchaseCreateTransformer.updateWith(purchase, create);
+        lockEntities(purchase);
         purchase.setPurchasedYear(LocalDate.now(GlobalClock.current()).getYear());
         purchase.setPurchasedAt(LocalDateTime.now(GlobalClock.current()));
         updatePurchaserBalance(purchase);
 
+
         purchaseRepository.save(purchase);
+        purchaseRepository.flush();
+    }
+
+    private void lockEntities(Purchase purchase) {
+        purchaseRepository.lock(purchase.getPurchaser(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        purchase.getParticipants().forEach(u -> purchaseRepository.lock(u, LockModeType.OPTIMISTIC_FORCE_INCREMENT));
     }
 
     private void updatePurchaserBalance(Purchase purchase) {

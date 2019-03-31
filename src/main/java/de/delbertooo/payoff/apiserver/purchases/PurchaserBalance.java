@@ -22,10 +22,6 @@ public class PurchaserBalance {
     @ManyToOne
     @MapsId("participantId")
     private User participant;
-    @Version
-    @Column(nullable = false)
-    @Setter(AccessLevel.PRIVATE)
-    private long version;
     @Column(nullable = false)
     private double balance = 0d;
 

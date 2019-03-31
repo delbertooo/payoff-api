@@ -1,5 +1,7 @@
 package de.delbertooo.payoff.apiserver.purchases;
 
+import de.delbertooo.payoff.apiserver.common.jpa.FlushRepository;
+import de.delbertooo.payoff.apiserver.common.jpa.LockRepository;
 import lombok.val;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,7 +14,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
-public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
+public interface PurchaseRepository extends CrudRepository<Purchase, Long>, FlushRepository, LockRepository {
 
     @Deprecated
     @Transactional(Transactional.TxType.SUPPORTS)

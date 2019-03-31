@@ -26,6 +26,11 @@ public class User {
 
     private String email;
 
+    @Version
+    @Column(nullable = false)
+    @Setter(AccessLevel.PRIVATE)
+    private long version;
+
     @OneToMany(mappedBy = "purchaser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.PRIVATE)
     private List<PurchaserBalance> balances = new ArrayList<>();

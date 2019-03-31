@@ -1,5 +1,7 @@
 package de.delbertooo.payoff.apiserver.users;
 
+import de.delbertooo.payoff.apiserver.common.jpa.FlushRepository;
+import de.delbertooo.payoff.apiserver.common.jpa.LockRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, Long>, LockRepository, FlushRepository {
 
     @Transactional(Transactional.TxType.SUPPORTS)
     Collection<User> findAll();
