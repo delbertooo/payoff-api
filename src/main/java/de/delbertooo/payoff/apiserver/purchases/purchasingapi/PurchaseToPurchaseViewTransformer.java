@@ -1,7 +1,7 @@
-package de.delbertooo.payoff.apiserver.purchases.api;
+package de.delbertooo.payoff.apiserver.purchases.purchasingapi;
 
 import de.delbertooo.payoff.apiserver.purchases.Purchase;
-import de.delbertooo.payoff.apiserver.purchases.api.PurchasesService.PurchaseView;
+import de.delbertooo.payoff.apiserver.purchases.purchasingapi.PurchasesService.PurchaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package de.delbertooo.payoff.apiserver.purchases.summaryapi;
 
 import de.delbertooo.payoff.apiserver.purchases.PurchaserBalance;
-import de.delbertooo.payoff.apiserver.purchases.api.UserToNamesTransformer;
+import de.delbertooo.payoff.apiserver.purchases.purchasingapi.UserToNamesTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

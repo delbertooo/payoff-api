@@ -1,4 +1,4 @@
-package de.delbertooo.payoff.apiserver.purchases.api;
+package de.delbertooo.payoff.apiserver.purchases.purchasingapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

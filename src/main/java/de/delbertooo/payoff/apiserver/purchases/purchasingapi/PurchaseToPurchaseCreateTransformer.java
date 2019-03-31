@@ -1,4 +1,4 @@
-package de.delbertooo.payoff.apiserver.purchases.api;
+package de.delbertooo.payoff.apiserver.purchases.purchasingapi;
 
 import de.delbertooo.payoff.apiserver.purchases.Purchase;
 import de.delbertooo.payoff.apiserver.users.User;
