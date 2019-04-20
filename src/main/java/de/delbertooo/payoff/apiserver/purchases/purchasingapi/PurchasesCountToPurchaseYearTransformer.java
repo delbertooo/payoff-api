@@ -13,7 +13,7 @@ public class PurchasesCountToPurchaseYearTransformer {
     public List<PurchasesService.PurchaseYear> toPurchaseYears(List<PurchasesCount> counts) {
         return counts.stream()
                 .map(this::toPurchaseYear)
-                .sorted(Comparator.comparing(PurchasesService.PurchaseYear::getYear))
+                .sorted(Comparator.comparing(PurchasesService.PurchaseYear::getYear).reversed())
                 .collect(Collectors.toList());
     }
 
