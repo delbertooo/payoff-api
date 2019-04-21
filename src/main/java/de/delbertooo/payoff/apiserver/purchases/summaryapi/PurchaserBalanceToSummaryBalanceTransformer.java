@@ -25,7 +25,7 @@ public class PurchaserBalanceToSummaryBalanceTransformer {
     public List<SummaryService.Summary.Balance> toBalances(List<PurchaserBalance> balances) {
         return balances.stream()
                 .map(this::toBalance)
-                .sorted(Comparator.comparing(SummaryService.Summary.Balance::getUser))
+                .sorted(Comparator.comparing(SummaryService.Summary.Balance::getBalance))
                 .collect(Collectors.toList());
     }
 
