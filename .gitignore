@@ -25,3 +25,6 @@ buildNumber.properties
 .project
 .factorypath
 .classpath
+
+
+src/main/resources/import
