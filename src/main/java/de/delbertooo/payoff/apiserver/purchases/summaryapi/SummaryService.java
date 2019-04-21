@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class SummaryService {
@@ -21,12 +21,17 @@ public class SummaryService {
     private PurchaseRepository purchaseRepository;
     private UserRepository userRepository;
     private PurchaserBalanceToSummaryBalanceTransformer purchaserBalanceToSummaryBalanceTransformer;
+    private Locale locale;
 
     @Autowired
-    public SummaryService(PurchaseRepository purchaseRepository, UserRepository userRepository, PurchaserBalanceToSummaryBalanceTransformer purchaserBalanceToSummaryBalanceTransformer) {
+    public SummaryService(PurchaseRepository purchaseRepository,
+                          UserRepository userRepository,
+                          PurchaserBalanceToSummaryBalanceTransformer purchaserBalanceToSummaryBalanceTransformer,
+                          Locale locale) {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
         this.purchaserBalanceToSummaryBalanceTransformer = purchaserBalanceToSummaryBalanceTransformer;
+        this.locale = locale;
     }
 
     @Transactional(Transactional.TxType.SUPPORTS)
@@ -40,7 +45,7 @@ public class SummaryService {
 
     private Summary toSummary(double totalPrice, List<PurchaserBalance> balances) {
         return new Summary()
-                .setTotalPrice(new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP))
+                .setFormattedTotalPrice(NumberFormat.getCurrencyInstance(locale).format(totalPrice))
                 .setBalances(purchaserBalanceToSummaryBalanceTransformer.toBalances(balances))
                 ;
     }
@@ -49,14 +54,14 @@ public class SummaryService {
     @Getter
     @Setter
     public static class Summary {
-        private BigDecimal totalPrice;
+        private String formattedTotalPrice;
         private List<Balance> balances;
 
         @Getter
         @Setter
         public static class Balance {
             private String user;
-            private BigDecimal balance;
+            private String formattedBalance;
         }
     }
 }

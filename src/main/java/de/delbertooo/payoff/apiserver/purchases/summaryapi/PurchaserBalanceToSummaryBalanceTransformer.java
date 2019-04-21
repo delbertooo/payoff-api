@@ -5,34 +5,36 @@ import de.delbertooo.payoff.apiserver.purchases.purchasingapi.UserToNamesTransfo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
 public class PurchaserBalanceToSummaryBalanceTransformer {
 
     private UserToNamesTransformer userToNamesTransformer;
+    private Locale locale;
 
     @Autowired
-    public PurchaserBalanceToSummaryBalanceTransformer(UserToNamesTransformer userToNamesTransformer) {
+    public PurchaserBalanceToSummaryBalanceTransformer(UserToNamesTransformer userToNamesTransformer, Locale locale) {
         this.userToNamesTransformer = userToNamesTransformer;
+        this.locale = locale;
     }
 
 
     public List<SummaryService.Summary.Balance> toBalances(List<PurchaserBalance> balances) {
         return balances.stream()
+                .sorted(Comparator.comparing(PurchaserBalance::getBalance))
                 .map(this::toBalance)
-                .sorted(Comparator.comparing(SummaryService.Summary.Balance::getBalance))
                 .collect(Collectors.toList());
     }
 
     private SummaryService.Summary.Balance toBalance(PurchaserBalance purchaserBalance) {
         return new SummaryService.Summary.Balance()
                 .setUser(userToNamesTransformer.toName(purchaserBalance.getParticipant()))
-                .setBalance(new BigDecimal(purchaserBalance.getBalance()).setScale(2, RoundingMode.HALF_UP))
+                .setFormattedBalance(NumberFormat.getCurrencyInstance(locale).format(purchaserBalance.getBalance()))
                 ;
     }
 }

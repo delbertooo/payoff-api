@@ -99,6 +99,6 @@ public class PurchasesService {
         private String purchaser;
         private ZonedDateTime date;
         private List<String> participants;
-        private BigDecimal price;
+        private String formattedPrice;
     }
 }
