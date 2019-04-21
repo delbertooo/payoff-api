@@ -29,13 +29,14 @@ public class WeeklyReportService {
                                UserToWeeklyReportEmailTransformer userToWeeklyReportEmailTransformer,
                                JavaMailSender javaMailSender,
                                WeeklyReportEmailService weeklyReportEmailService,
-                               SystemEmailService systemEmailService) {
+                               SystemEmailService systemEmailService,
+                               Locale locale) {
         this.userRepository = userRepository;
         this.userToWeeklyReportEmailTransformer = userToWeeklyReportEmailTransformer;
         this.javaMailSender = javaMailSender;
         this.weeklyReportEmailService = weeklyReportEmailService;
         this.systemEmailService = systemEmailService;
-        this.locale = Locale.GERMANY;
+        this.locale = locale;
     }
 
     @Transactional(Transactional.TxType.SUPPORTS)
