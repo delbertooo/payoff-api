@@ -58,7 +58,7 @@ public class PurchasesService {
         lockEntities(purchase);
         purchase.setPurchasedYear(LocalDate.now(GlobalClock.current()).getYear());
         purchase.setPurchasedAt(LocalDateTime.now(GlobalClock.current()));
-        updatePurchaserBalance(purchase);
+        purchase.updatePurchaserBalance();
 
 
         purchaseRepository.save(purchase);
@@ -68,16 +68,6 @@ public class PurchasesService {
     private void lockEntities(Purchase purchase) {
         purchaseRepository.lock(purchase.getPurchaser(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         purchase.getParticipants().forEach(u -> purchaseRepository.lock(u, LockModeType.OPTIMISTIC_FORCE_INCREMENT));
-    }
-
-    private void updatePurchaserBalance(Purchase purchase) {
-        double pricePerParticipant = purchase.getPricePerParticipant();
-        purchase.getParticipants()
-                .forEach(participant -> {
-                    val purchaser = purchase.getPurchaser();
-                    purchaser.addToBalance(participant, pricePerParticipant);
-                    participant.addToBalance(purchaser, -pricePerParticipant);
-                });
     }
 
     @Getter

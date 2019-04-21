@@ -1,10 +1,7 @@
 package de.delbertooo.payoff.apiserver.purchases;
 
 import de.delbertooo.payoff.apiserver.users.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -54,5 +51,18 @@ public class Purchase {
 
     public double getPricePerParticipant() {
         return getPrice().doubleValue() / getParticipants().size();
+    }
+
+
+    public void updatePurchaserBalance() {
+        double pricePerParticipant = getPricePerParticipant();
+        val purchaser = getPurchaser();
+        getParticipants()
+                .forEach(participant -> addToBalance(purchaser, participant, pricePerParticipant));
+    }
+
+    private void addToBalance(User purchaser, User participant, double pricePerParticipant) {
+        purchaser.addToBalance(participant, pricePerParticipant);
+        participant.addToBalance(purchaser, -pricePerParticipant);
     }
 }
