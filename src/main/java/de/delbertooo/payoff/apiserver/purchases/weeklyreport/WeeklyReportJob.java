@@ -19,7 +19,7 @@ public class WeeklyReportJob {
         this.weeklyReportService = weeklyReportService;
     }
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(cron = "${app.weekly-report-cron}")
     public void sendEmails() {
         val userIds = weeklyReportService.findUserIdsForReport();
         log.debug("Sending weekly report to {} users.", userIds.size());
