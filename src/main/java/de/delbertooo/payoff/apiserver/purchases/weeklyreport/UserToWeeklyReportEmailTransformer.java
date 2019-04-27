@@ -2,6 +2,7 @@ package de.delbertooo.payoff.apiserver.purchases.weeklyreport;
 
 import de.delbertooo.payoff.apiserver.purchases.PurchaserBalance;
 import de.delbertooo.payoff.apiserver.users.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
@@ -13,13 +14,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserToWeeklyReportEmailTransformer {
 
-    public UserToWeeklyReportEmailTransformer() {
+    private String appUrl;
+
+    public UserToWeeklyReportEmailTransformer(@Value("${app.app-url}") String appUrl) {
+        this.appUrl = appUrl;
     }
 
     public WeeklyReportService.Email toEmail(User user, Locale locale) {
         return new WeeklyReportService.Email()
                 .setName(user.getName())
-                .setAppUrl(null)
+                .setAppUrl(appUrl)
                 .setSubject(LocalDate.now().format(DateTimeFormatter.ofPattern("'Your weekly report, week' w, yyyy")))
                 .setTo(user.getEmail())
                 .setNegativeBalances(user.streamNegativeBalances()
