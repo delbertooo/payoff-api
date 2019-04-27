@@ -17,7 +17,7 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long>, Flus
     List<PurchasesCount> findYearlyCounts();
 
     @Transactional(Transactional.TxType.SUPPORTS)
-    @Query("SELECT p FROM Purchase p JOIN FETCH p.participants JOIN FETCH p.purchaser WHERE p.purchasedYear = :year")
+    @Query("SELECT DISTINCT p FROM Purchase p JOIN FETCH p.participants JOIN FETCH p.purchaser WHERE p.purchasedYear = :year")
     List<Purchase> findByYear(int year);
 
     @Deprecated
