@@ -4,6 +4,7 @@ import de.delbertooo.payoff.apiserver.common.jpa.FlushRepository;
 import de.delbertooo.payoff.apiserver.common.jpa.LockRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long>, Flus
 
     @Transactional(Transactional.TxType.SUPPORTS)
     @Query("SELECT DISTINCT p FROM Purchase p JOIN FETCH p.participants JOIN FETCH p.purchaser WHERE p.purchasedYear = :year")
-    List<Purchase> findByYear(int year);
+    List<Purchase> findByYear(@Param("year") int year);
 
     @Deprecated
     @Transactional(Transactional.TxType.SUPPORTS)
