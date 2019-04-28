@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
@@ -44,8 +46,10 @@ public class SummaryService {
     }
 
     private Summary toSummary(double totalPrice, List<PurchaserBalance> balances) {
+        val roundedTotalPrice = BigDecimal.valueOf(totalPrice).setScale(2, RoundingMode.HALF_UP);
         return new Summary()
-                .setFormattedTotalPrice(NumberFormat.getCurrencyInstance(locale).format(totalPrice))
+                .setFormattedTotalPrice(NumberFormat.getCurrencyInstance(locale).format(roundedTotalPrice))
+                .setTotalPrice(roundedTotalPrice)
                 .setBalances(purchaserBalanceToSummaryBalanceTransformer.toBalances(balances))
                 ;
     }
@@ -54,6 +58,7 @@ public class SummaryService {
     @Getter
     @Setter
     public static class Summary {
+        private BigDecimal totalPrice;
         private String formattedTotalPrice;
         private List<Balance> balances;
 
@@ -62,6 +67,7 @@ public class SummaryService {
         public static class Balance {
             private String user;
             private String formattedBalance;
+            private BigDecimal balance;
         }
     }
 }

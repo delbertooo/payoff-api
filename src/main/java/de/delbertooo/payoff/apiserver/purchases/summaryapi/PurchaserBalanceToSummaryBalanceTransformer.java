@@ -2,9 +2,12 @@ package de.delbertooo.payoff.apiserver.purchases.summaryapi;
 
 import de.delbertooo.payoff.apiserver.purchases.PurchaserBalance;
 import de.delbertooo.payoff.apiserver.purchases.purchasingapi.UserToNamesTransformer;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.List;
@@ -32,9 +35,11 @@ public class PurchaserBalanceToSummaryBalanceTransformer {
     }
 
     private SummaryService.Summary.Balance toBalance(PurchaserBalance purchaserBalance) {
+        val roundedBalance = BigDecimal.valueOf(purchaserBalance.getBalance()).setScale(2, RoundingMode.HALF_UP);
         return new SummaryService.Summary.Balance()
                 .setUser(userToNamesTransformer.toName(purchaserBalance.getParticipant()))
-                .setFormattedBalance(NumberFormat.getCurrencyInstance(locale).format(purchaserBalance.getBalance()))
+                .setFormattedBalance(NumberFormat.getCurrencyInstance(locale).format(roundedBalance))
+                .setBalance(roundedBalance)
                 ;
     }
 }

@@ -37,6 +37,7 @@ public class PurchaseToPurchaseViewTransformer {
                 .setDate(purchase.getPurchasedAt().atZone(ZoneId.systemDefault()))
                 .setItem(purchase.getName())
                 .setFormattedPrice(NumberFormat.getCurrencyInstance(locale).format(purchase.getPrice()))
+                .setPrice(purchase.getPrice())
                 .setPurchaser(userToNamesTransformer.toName(purchase.getPurchaser()))
                 .setParticipants(userToNamesTransformer.toNames(purchase.getParticipants()))
                 ;
