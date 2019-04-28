@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 @Entity
 public class User {
 
-    public static final Comparator<User> BY_NAME_COMPARATOR = Comparator.comparing(User::getName);
+    public static final Comparator<User> BY_NAME_COMPARATOR = Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER);
 
     @Id
     @GeneratedValue
