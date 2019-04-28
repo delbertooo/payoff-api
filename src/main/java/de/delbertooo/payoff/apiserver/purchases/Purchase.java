@@ -48,6 +48,14 @@ public class Purchase {
         return this;
     }
 
+    public double getPriceForPurchaser() {
+        double price = getPrice().doubleValue();
+        if (getParticipants().contains(getPurchaser())) {
+            price -= getPricePerParticipant();
+        }
+        return price;
+    }
+
 
     public double getPricePerParticipant() {
         return getPrice().doubleValue() / getParticipants().size();

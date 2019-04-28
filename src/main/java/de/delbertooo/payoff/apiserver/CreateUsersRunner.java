@@ -29,9 +29,9 @@ public class CreateUsersRunner implements ApplicationRunner {
         if (!args.containsOption("create-users")) {
             return;
         }
-        val delbertooo = new User().setName("delbertooo").setEmail("del@payoff");
-        val foo = new User().setName("foo").setEmail("foo@payoff");
-        val masuuk = new User().setName("masuuk");
+        val delbertooo = new User().setName("delbertooo").setShortName("DLB").setEmail("del@payoff");
+        val foo = new User().setName("foo").setShortName("FOO").setEmail("foo@payoff");
+        val masuuk = new User().setShortName("MSK").setName("masuuk");
 
         Stream.of(delbertooo, masuuk, foo)
                 .peek(u -> u.setPassword(UUID.randomUUID().toString()))

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -14,12 +15,17 @@ import java.util.stream.Stream;
 @Entity
 public class User {
 
+    public static final Comparator<User> BY_NAME_COMPARATOR = Comparator.comparing(User::getName);
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 32 * 4)
     private String name;
+
+    @Column(nullable = false, unique = true, length = 3 * 4)
+    private String shortName;
 
     @Column(nullable = false)
     private String password;

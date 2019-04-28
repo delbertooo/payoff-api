@@ -96,10 +96,18 @@ public class PurchasesService {
     @Setter
     public static class PurchaseView {
         private String item;
-        private String purchaser;
+        private Share purchaser;
         private ZonedDateTime date;
-        private List<String> participants;
+        private List<Share> participants;
         private String formattedPrice;
         private BigDecimal price;
+
+        @Getter
+        @Setter
+        public static class Share {
+            private UsersService.Purchaser purchaser;
+            private BigDecimal shareOfPrice;
+            private String formattedShareOfPrice;
+        }
     }
 }

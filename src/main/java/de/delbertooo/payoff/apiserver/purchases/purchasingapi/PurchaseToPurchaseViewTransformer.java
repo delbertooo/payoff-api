@@ -2,9 +2,13 @@ package de.delbertooo.payoff.apiserver.purchases.purchasingapi;
 
 import de.delbertooo.payoff.apiserver.purchases.Purchase;
 import de.delbertooo.payoff.apiserver.purchases.purchasingapi.PurchasesService.PurchaseView;
+import de.delbertooo.payoff.apiserver.users.User;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -38,8 +42,21 @@ public class PurchaseToPurchaseViewTransformer {
                 .setItem(purchase.getName())
                 .setFormattedPrice(NumberFormat.getCurrencyInstance(locale).format(purchase.getPrice()))
                 .setPrice(purchase.getPrice())
-                .setPurchaser(userToNamesTransformer.toName(purchase.getPurchaser()))
-                .setParticipants(userToNamesTransformer.toNames(purchase.getParticipants()))
+                .setPurchaser(toShare(purchase.getPurchaser(), purchase.getPriceForPurchaser()))
+                .setParticipants(purchase.getParticipants().stream()
+                        .sorted(User.BY_NAME_COMPARATOR)
+                        .map(purchaser -> toShare(purchaser, purchase.getPricePerParticipant()))
+                        .collect(Collectors.toList())
+                )
+                ;
+    }
+
+    private PurchasesService.PurchaseView.Share toShare(User purchaser, double shareOfPrice) {
+        val roundedShareOfPrice = BigDecimal.valueOf(shareOfPrice).setScale(2, RoundingMode.HALF_UP);
+        return new PurchaseView.Share()
+                .setPurchaser(userToNamesTransformer.toPurchaser(purchaser))
+                .setShareOfPrice(roundedShareOfPrice)
+                .setFormattedShareOfPrice(NumberFormat.getCurrencyInstance(locale).format(roundedShareOfPrice))
                 ;
     }
 

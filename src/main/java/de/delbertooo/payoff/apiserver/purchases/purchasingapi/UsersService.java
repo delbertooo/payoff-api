@@ -1,6 +1,8 @@
 package de.delbertooo.payoff.apiserver.purchases.purchasingapi;
 
 import de.delbertooo.payoff.apiserver.users.UserRepository;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,14 @@ public class UsersService {
     public List<String> findPurchaserNames() {
         val users = userRepository.findAll();
         return userToNamesTransformer.toNames(users);
+    }
+
+
+    @Getter
+    @Setter
+    public static class Purchaser {
+        private String shortName;
+        private String name;
     }
 
 }
